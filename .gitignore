@@ -1,0 +1,7 @@
+/build/
+/target
+java-url-shortener-pkollz.iml
+/.idea/
+/.settings/
+.classpath
+.project
