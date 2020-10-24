@@ -3,9 +3,11 @@ package com.padlet.contract.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
+
 // Contains parameters of response
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UrlShortenerResponse {
+public class UrlShortenerResponse implements Serializable {
 
     @JsonProperty("shortUrl")
     private final String shortUrl;
@@ -16,10 +18,10 @@ public class UrlShortenerResponse {
     @JsonProperty("error")
     private final Error error;
 
-    private UrlShortenerResponse(UrlShortenerResponseBuilder builder) {
-        this.shortUrl = builder.shortUrl;
-        this.longUrl = builder.longUrl;
-        this.error = builder.error;
+    public UrlShortenerResponse(String shortUrl, String longUrl, Error error) {
+        this.shortUrl = shortUrl;
+        this.longUrl = longUrl;
+        this.error = error;
     }
 
     public static class UrlShortenerResponseBuilder {
@@ -46,7 +48,7 @@ public class UrlShortenerResponse {
         }
 
         public UrlShortenerResponse build() {
-            return new UrlShortenerResponse(this);
+            return new UrlShortenerResponse(this.shortUrl, this.longUrl, this.error);
         }
     }
 }
