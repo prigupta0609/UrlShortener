@@ -16,6 +16,9 @@ public class UrlValidator implements IValidator {
                 throw new ValidationException(Error.INVALID_URL_FORMAT.getErrorCode(),
                         Error.INVALID_URL_FORMAT.getMessage());
             }
+        } else {
+            throw new ValidationException(Error.INVALID_URL_FORMAT.getErrorCode(),
+                    Error.INVALID_URL_FORMAT.getMessage());
         }
     }
 }

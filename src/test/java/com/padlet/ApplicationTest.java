@@ -1,5 +1,6 @@
 package com.padlet;
 
+import com.padlet.common.Error;
 import com.padlet.contract.response.UrlShortenerResponse;
 import org.json.simple.JSONObject;
 import org.junit.Assert;
@@ -24,6 +25,8 @@ import java.io.FileReader;
 public class ApplicationTest {
 
     private static final String getShortUrlRequestPath = "src/test/resources/GetShortUrlRequest.json";
+    private static final String getShortUrlRequest_InvalidUrlFormat_Path = "src/test/resources/GetShortUrlRequest_InvalidUrlFormat.json";
+    private static final String emptyUrlRequest = "src/test/resources/EmptyUrlRequest.json";
 
     @LocalServerPort
     private int port;
@@ -51,10 +54,35 @@ public class ApplicationTest {
     }
 
     @Test
+    public void testEmptyUrlRequest() throws Exception {
+        UrlShortenerResponse response = insertNewShortUrl(emptyUrlRequest);
+        Assert.assertNotNull(response);
+        Assert.assertNull(response.getShortUrl());
+        Assert.assertNotNull(response.getError());
+        Assert.assertEquals(Error.INVALID_URL_FORMAT.getErrorCode(), response.getError().getCode());
+    }
+
+    @Test
+    public void testGetShortUrl_InvalidUrlFormat() throws Exception {
+        UrlShortenerResponse response = insertNewShortUrl(getShortUrlRequest_InvalidUrlFormat_Path);
+        Assert.assertNotNull(response);
+        Assert.assertNotNull(response.getError());
+        Assert.assertEquals(Error.INVALID_URL_FORMAT.getErrorCode(), response.getError().getCode());
+    }
+
+    @Test
     public void testGetLongUrl() throws Exception {
         UrlShortenerResponse response = insertNewShortUrl(getShortUrlRequestPath);
         UrlShortenerResponse finalResponse = fetchShortUrlFromLongUrl(response.getShortUrl());
         Assert.assertNotNull(finalResponse);
+    }
+
+    @Test
+    public void testWrongLongUrl() throws Exception {
+        UrlShortenerResponse response = fetchShortUrlFromLongUrl("http://www.sample.com/tr451e");
+        Assert.assertNotNull(response);
+        Assert.assertNotNull(response.getError());
+        Assert.assertEquals(Error.URL_NOT_FOUND.getErrorCode(), response.getError().getCode());
     }
 
     private UrlShortenerResponse insertNewShortUrl(String filePath) throws Exception{
@@ -66,8 +94,6 @@ public class ApplicationTest {
     }
 
     private UrlShortenerResponse fetchShortUrlFromLongUrl(String url) throws Exception {
-        //JSONObject request = (JSONObject) parser.parse(url);
-        //HttpEntity<String> httpEntity = getHttpRequestJSON(request);
         return this.restTemplate
                 .getForObject("http://localhost:"+port+"/url/decode?url=" + url, UrlShortenerResponse.class);
     }
