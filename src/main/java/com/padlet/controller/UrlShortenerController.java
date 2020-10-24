@@ -24,7 +24,7 @@ public class UrlShortenerController {
                 consumes = MediaType.APPLICATION_JSON_VALUE,
                 produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public UrlShortenerResponse getShortUrl(UrlShortenerRequest request) throws Exception {
+    public UrlShortenerResponse getShortUrl(@RequestBody UrlShortenerRequest request) throws Exception {
         return urlService.encodeUrl(request);
     }
 
