@@ -2,7 +2,7 @@ package com.padlet.controller;
 
 import com.padlet.contract.request.UrlShortenerRequest;
 import com.padlet.contract.response.UrlShortenerResponse;
-import com.padlet.service.UrlService;
+import com.padlet.service.IUrlService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public class UrlShortenerController {
 
     @Autowired
-    UrlService urlService;
+    IUrlService urlService;
 
     @RequestMapping("/")
     @ResponseBody
