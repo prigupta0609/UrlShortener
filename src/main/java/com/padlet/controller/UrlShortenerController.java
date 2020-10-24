@@ -28,10 +28,10 @@ public class UrlShortenerController {
         return urlService.encodeUrl(request);
     }
 
-    @GetMapping(value = "/url/decode/{url}",
+    @GetMapping(value = "/url/decode",
                 produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public UrlShortenerResponse getLongUrl(@PathVariable String url) throws Exception {
+    public UrlShortenerResponse getLongUrl(@RequestParam String url) throws Exception {
         return urlService.decodeUrl(url);
     }
 }

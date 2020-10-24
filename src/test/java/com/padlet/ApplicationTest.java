@@ -1,6 +1,5 @@
 package com.padlet;
 
-import com.padlet.contract.request.UrlShortenerRequest;
 import com.padlet.contract.response.UrlShortenerResponse;
 import org.json.simple.JSONObject;
 import org.junit.Assert;
@@ -47,13 +46,35 @@ public class ApplicationTest {
 
     @Test
     public void testGetShortUrl() throws Exception {
-        JSONObject request = (JSONObject) parser.parse(new FileReader(getShortUrlRequestPath));
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> httpEntity = new HttpEntity<String>(request.toJSONString(), headers);
-        UrlShortenerResponse response = this.restTemplate
+        UrlShortenerResponse response = insertNewShortUrl(getShortUrlRequestPath);
+        Assert.assertNotNull(response);
+    }
+
+    @Test
+    public void testGetLongUrl() throws Exception {
+        UrlShortenerResponse response = insertNewShortUrl(getShortUrlRequestPath);
+        UrlShortenerResponse finalResponse = fetchShortUrlFromLongUrl(response.getShortUrl());
+        Assert.assertNotNull(finalResponse);
+    }
+
+    private UrlShortenerResponse insertNewShortUrl(String filePath) throws Exception{
+        JSONObject request = (JSONObject) parser.parse(new FileReader(filePath));
+        HttpEntity<String> httpEntity = getHttpRequestJSON(request);
+        return this.restTemplate
                 .postForObject("http://localhost:"+port+"/url/encode",
                         httpEntity, UrlShortenerResponse.class);
-        Assert.assertNotNull(response);
+    }
+
+    private UrlShortenerResponse fetchShortUrlFromLongUrl(String url) throws Exception {
+        //JSONObject request = (JSONObject) parser.parse(url);
+        //HttpEntity<String> httpEntity = getHttpRequestJSON(request);
+        return this.restTemplate
+                .getForObject("http://localhost:"+port+"/url/decode?url=" + url, UrlShortenerResponse.class);
+    }
+
+    private HttpEntity<String> getHttpRequestJSON(JSONObject request) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return new HttpEntity<String>(request.toJSONString(), headers);
     }
 }

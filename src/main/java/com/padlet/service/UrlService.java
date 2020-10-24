@@ -34,25 +34,35 @@ public class UrlService implements IUrlService {
             String shortUrl = Constants.INITIAL_URL + "a23de1";
             URL url = new URL(shortUrl, request.getUrl());
             urlDao.addUrlMapping("a23de1", url);
-            response = getResponse(shortUrl, request, null);
+            response = getResponse(shortUrl, request.getUrl(), null);
         } catch (ValidationException e) {
             Error error = new Error(e.getMessage(), e.getErrorCode());
-            response = getResponse(null, request, error);
+            response = getResponse(null, request.getUrl(), error);
         }
         return response;
     }
 
     @Override
     public UrlShortenerResponse decodeUrl(String shortUrl) {
-        return null;
+        UrlShortenerResponse response = null;
+        String hashCode = shortUrl.substring(shortUrl.length()-6, shortUrl.length());
+        URL url = urlDao.getUrlFromHashcode(hashCode);
+        if (url == null) {
+            Error error = new Error(com.padlet.common.Error.URL_NOT_FOUND.getErrorCode(),
+                    com.padlet.common.Error.URL_NOT_FOUND.getMessage());
+            response = getResponse(shortUrl, null, error);
+        } else {
+            response = getResponse(shortUrl, url.getLongUrl(), null);
+        }
+        return response;
     }
 
-    private UrlShortenerResponse getResponse(String shortUrl, UrlShortenerRequest request,
+    private UrlShortenerResponse getResponse(String shortUrl, String longUrl,
                                              Error error) {
         UrlShortenerResponse.UrlShortenerResponseBuilder builder
                 = new UrlShortenerResponse.UrlShortenerResponseBuilder();
         return builder.setShortUrl(shortUrl)
-                .setLongUrl(request.getUrl())
+                .setLongUrl(longUrl)
                 .setError(error)
                 .build();
     }

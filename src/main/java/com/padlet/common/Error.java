@@ -2,7 +2,8 @@ package com.padlet.common;
 
 public enum Error {
 
-    INVALID_URL_FORMAT("E01", "Input url format is invalid");
+    INVALID_URL_FORMAT("E01", "Input url format is invalid"),
+    URL_NOT_FOUND("E02", "Request url not found");
 
     private String errorCode;
     private String message;

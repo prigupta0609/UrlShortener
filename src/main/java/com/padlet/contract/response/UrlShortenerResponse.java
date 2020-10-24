@@ -24,6 +24,18 @@ public class UrlShortenerResponse implements Serializable {
         this.error = error;
     }
 
+    public String getShortUrl() {
+        return shortUrl;
+    }
+
+    public String getLongUrl() {
+        return longUrl;
+    }
+
+    public Error getError() {
+        return error;
+    }
+
     public static class UrlShortenerResponseBuilder {
         private String shortUrl;
         private String longUrl;

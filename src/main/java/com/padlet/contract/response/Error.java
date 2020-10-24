@@ -10,13 +10,21 @@ import java.io.Serializable;
 public class Error implements Serializable {
 
     @JsonProperty("description")
-    private String description;
+    private final String description;
 
     @JsonProperty("code")
-    private String code;
+    private final String code;
 
     public Error(String description, String code) {
         this.description = description;
         this.code = code;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getCode() {
+        return code;
     }
 }
