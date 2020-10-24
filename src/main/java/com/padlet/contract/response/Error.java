@@ -13,19 +13,8 @@ public class Error {
     @JsonProperty("code")
     private String code;
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
+    public Error(String description, String code) {
         this.description = description;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
         this.code = code;
     }
 }

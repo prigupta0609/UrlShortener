@@ -7,25 +7,46 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UrlShortenerResponse {
 
-    @JsonProperty("url")
-    private String url;
+    @JsonProperty("shortUrl")
+    private final String shortUrl;
+
+    @JsonProperty("longUrl")
+    private final String longUrl;
 
     @JsonProperty("error")
-    private Error error;
+    private final Error error;
 
-    public String getUrl() {
-        return url;
+    private UrlShortenerResponse(UrlShortenerResponseBuilder builder) {
+        this.shortUrl = builder.shortUrl;
+        this.longUrl = builder.longUrl;
+        this.error = builder.error;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
+    public static class UrlShortenerResponseBuilder {
+        private String shortUrl;
+        private String longUrl;
+        private Error error;
 
-    public Error getError() {
-        return error;
-    }
+        public UrlShortenerResponseBuilder() {
+        }
 
-    public void setError(Error error) {
-        this.error = error;
+        public UrlShortenerResponseBuilder setShortUrl(String shortUrl) {
+            this.shortUrl = shortUrl;
+            return this;
+        }
+
+        public UrlShortenerResponseBuilder setLongUrl(String longUrl) {
+            this.longUrl = longUrl;
+            return this;
+        }
+
+        public UrlShortenerResponseBuilder setError(Error error) {
+            this.error = error;
+            return this;
+        }
+
+        public UrlShortenerResponse build() {
+            return new UrlShortenerResponse(this);
+        }
     }
 }
