@@ -36,6 +36,9 @@ public class UrlShortenerResponse implements Serializable {
         return error;
     }
 
+    /**
+     * Nested builder class to create UrlShortenerResponse
+     */
     public static class UrlShortenerResponseBuilder {
         private String shortUrl;
         private String longUrl;

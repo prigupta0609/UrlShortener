@@ -1,5 +1,6 @@
 package com.padlet.common;
 
+// Enum to store all the error codes
 public enum Error {
 
     INVALID_URL_FORMAT("E01", "Input url format is invalid"),

@@ -1,8 +1,5 @@
 package com.padlet.model;
 
-import java.io.Serializable;
-import java.util.Date;
-
 // Contains all information of URL and stored in DB
 public class URL {
 

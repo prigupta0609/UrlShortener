@@ -26,6 +26,11 @@ public class UrlService implements IUrlService {
 
     private static int counter = 1;
 
+    /**
+     * Encode the long url to short url
+     * @param request
+     * @return UrlShortenerResponse
+     */
     @Override
     public UrlShortenerResponse encodeUrl(UrlShortenerRequest request) {
         UrlShortenerResponse response = null;
@@ -40,6 +45,11 @@ public class UrlService implements IUrlService {
         return response;
     }
 
+    /**
+     * Decode short url to long url
+     * @param shortUrl
+     * @return UrlShortenerResponse
+     */
     @Override
     public UrlShortenerResponse decodeUrl(String shortUrl) {
         UrlShortenerResponse response = null;

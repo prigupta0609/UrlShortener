@@ -20,6 +20,12 @@ public class UrlShortenerController {
         return "URL Shortener is active";
     }
 
+    /**
+     * End-point to encode long url
+     * @param request
+     * @return
+     * @throws Exception
+     */
     @PostMapping(value = "/url/encode",
                 consumes = MediaType.APPLICATION_JSON_VALUE,
                 produces = MediaType.APPLICATION_JSON_VALUE)
@@ -28,6 +34,12 @@ public class UrlShortenerController {
         return urlService.encodeUrl(request);
     }
 
+    /**
+     * End-point to decode short url
+     * @param url
+     * @return
+     * @throws Exception
+     */
     @GetMapping(value = "/url/decode",
                 produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
