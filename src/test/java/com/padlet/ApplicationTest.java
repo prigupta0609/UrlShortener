@@ -9,27 +9,32 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.FileReader;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class,
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+        webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@TestPropertySource(locations="classpath:config/application.yml")
 public class ApplicationTest {
 
     private static final String getShortUrlRequestPath = "src/test/resources/GetShortUrlRequest.json";
     private static final String getShortUrlRequest_InvalidUrlFormat_Path = "src/test/resources/GetShortUrlRequest_InvalidUrlFormat.json";
     private static final String emptyUrlRequest = "src/test/resources/EmptyUrlRequest.json";
 
-    @LocalServerPort
+    @Value("${server.port}")
     private int port;
+
+    @Value("${server.hostname}")
+    private String hostname;
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -89,7 +94,7 @@ public class ApplicationTest {
         JSONObject request = (JSONObject) parser.parse(new FileReader(filePath));
         HttpEntity<String> httpEntity = getHttpRequestJSON(request);
         return this.restTemplate
-                .postForObject("http://localhost:"+port+"/url/encode",
+                .postForObject(hostname + ":"+port+"/url/encode",
                         httpEntity, UrlShortenerResponse.class);
     }
 
